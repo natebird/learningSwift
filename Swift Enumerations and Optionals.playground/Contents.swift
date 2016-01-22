@@ -56,9 +56,83 @@ let isWeekend = muteNotifications(dayType)
 
 
 // Code challenge
+class Point {
+  var x: Int
+  var y: Int
+  
+  init(x: Int, y: Int){
+    self.x = x
+    self.y = y
+  }
+}
+
 enum Direction {
   case Left
   case Right
   case Up
   case Down
 }
+
+
+class Robot {
+  var location: Point
+  
+  init() {
+    self.location = Point(x: 0, y: 0)
+  }
+  
+  func move(direction: Direction) {
+    // Enter your code below
+    switch direction {
+    case .Left: location.x -= 1
+    case .Right: location.x += 1
+    case .Up: location.y += 1
+    case .Down: location.y -= 1
+    }
+  }
+}
+
+
+import UIKit
+
+// Color Objects
+enum ColorComponents {
+  case RGB(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
+  case HSB(hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat)
+  
+  func color() -> UIColor {
+    switch self {
+    case .RGB(let redValue, let greenValue, let blueValue, let alphaValue):
+      return UIColor(red: redValue/255.0, green: greenValue/255.0, blue: blueValue/255.0, alpha: alphaValue)
+    case .HSB(let hueValue, let saturationValue, let brightnessValue, let alphaValue):
+      return UIColor(hue: hueValue/360.0, saturation: saturationValue/100.0, brightness: brightnessValue/100.0, alpha: alphaValue)
+    }
+  }
+}
+
+ColorComponents.RGB(red: 61.0, green: 120.0, blue: 198.0, alpha: 1.0).color()
+
+
+// Code challenge
+enum MobilePhone {
+  case iPhone(String)
+  case Android(String)
+  case Blackberry(String)
+  case WindowsPhone(String)
+}
+
+let iPhone = MobilePhone.iPhone("6S")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
