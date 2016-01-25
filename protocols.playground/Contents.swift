@@ -1,10 +1,19 @@
 //: Protocols
 
-protocol FullyNamed {
+// A "Can Do" protocol
+// "-able suffix"
+
+// A "Is A" protocol
+// "-type sufix"
+
+// A "Can Be" protocol
+// "-Convertible suffix"
+
+protocol FullyNameable {
   var fullName: String { get }
 }
 
-struct User : FullyNamed {
+struct User: FullyNameable {
   var fullName: String
 }
 
@@ -13,7 +22,6 @@ user.fullName
 
 
 struct Friend {
-  
   var firstName: String
   var middleName: String
   var lastName: String
@@ -33,11 +41,10 @@ friend.fullName
 import Foundation
 
 protocol Payable {
-  func pay() -> (basePay: Int, benefits: Int, deductions: Int, vacationTime: Int)
+  func pay() -> (basePay: Double, benefits: Double, deductions: Double, vacationTime: Double)
 }
 
 class Employee {
-  
   let name: String
   let address: String
   let startDate: NSDate
@@ -55,12 +62,12 @@ class Employee {
 }
 
 class HourlyEmployee: Employee, Payable {
-  let hourlyWage = 12
-  let hoursWorked = 40
-  let availableVaction = 0
+  let hourlyWage = 12.0
+  let hoursWorked = 40.0
+  let availableVaction = 0.0
   
-  func pay() -> (basePay: Int, benefits: Int, deductions: Int, vacationTime: Int) {
-    return (hourlyWage * hoursWorked, 0, 0, availableVaction)
+  func pay() -> (basePay: Double, benefits: Double, deductions: Double, vacationTime: Double) {
+    return (hourlyWage * hoursWorked, 0.0, 0.0, availableVaction)
   }
 }
 
@@ -86,7 +93,6 @@ class Fruit: Blendable {
   func blend() {
     print("I love smoothies!")
   }
-
 }
 
 class Dairy {
@@ -95,7 +101,6 @@ class Dairy {
   init(name: String) {
     self.name = name
   }
-  
 }
 
 class Cheese: Dairy {
@@ -109,6 +114,9 @@ class Milk: Dairy, Blendable {
 }
 
 func makeSmoothie(ingredients: [Blendable]) {
+  for ingredient in ingredients {
+    ingredient.blend()
+  }
   print("Smoothie time!")
 }
 
@@ -154,7 +162,39 @@ class Dice {
   }
 }
 
-var d6 = Dice(sides: <#T##Int#>, generator: LinearCongruentialGenerator())
+var d6 = Dice(sides: 6, generator: LinearCongruentialGenerator())
+
+
+///////////////////
+
+protocol Printable {
+  func description() -> String
+}
+
+protocol PrettyPrintable: Printable {
+  func prettyDescription() -> String
+}
+
+struct User2: PrettyPrintable {
+  let name: String
+  let age: Int
+  let address: String
+  
+  func description() -> String {
+    return "\(name), \(age), \(address)"
+  }
+  
+  func prettyDescription() -> String {
+    return "name: \(name), age: \(age), age: \(address)"
+  }
+
+}
+
+let nate = User2(name: "Nate", age: 35, address: "30114")
+nate.description()
+nate.prettyDescription()
+
+
 
 
 
