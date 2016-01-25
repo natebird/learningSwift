@@ -1,6 +1,13 @@
+
+// Tips for using protocols
+// Encapsulate common behavior
+// Is-A (inheritace) vs Has-A (protocol) relationship
+// Protocols as types
+// Protocol inheritance to build up complex protocols
+
 struct Point {
-  let x: Int
-  let y: Int
+  var x: Int
+  var y: Int
   
   func pointsAroundMe(withRange range: Int) -> [Point] {
     var results: [Point] = []
@@ -16,33 +23,77 @@ struct Point {
   }
 }
 
+enum Direction {
+  case Up, Down, Left, Right
+}
 
-class Enemy {
-  var life: Int = 2
-  let position: Point
+protocol Movable {
+  func move(direction: Direction, distance: Int)
+}
+
+protocol Destructable {
+  func decreaseLife(factor: Int)
+}
+
+protocol Attackable {
+  var strength: Int { get }
+  var range: Int { get }
   
-  init(position: Point) {
-    self.position = position
+  func attack(player: PlayerType)
+}
+
+protocol PlayerType {
+  var position: Point { get set }
+  var life: Int { get set }
+  init(point: Point)
+}
+
+class Enemy: PlayerType, Destructable, Attackable, Movable {
+  var position: Point
+  var life: Int = 10
+  var strength: Int = 5
+  var range: Int = 2
+  
+  required init(point: Point) {
+    self.position = point
   }
   
-  func decreaseHealth(factor: Int) {
-    life -= factor
+  func decreaseLife(factor: Int) {
+    self.life -= factor
+  }
+  
+  func attack(var player: PlayerType) {
+    player.life = player.life - strength
+  }
+  
+  func move(direction: Direction, distance: Int) {
+    switch direction {
+    case .Up: position.y += 1
+    case .Down: position.y -= 1
+    case .Left: position.x -= 1
+    case .Right: position.x += 1
+    }
   }
 }
 
-class Tower {
-  let position: Point
-  var range: Int = 1
+class Tower: PlayerType, Destructable, Attackable {
+  var position: Point
+  var life: Int = 10
   var strength: Int = 1
+  var range: Int = 1
   
-  init(position: Point) {
-    self.position = position
+  required init(point: Point) {
+    self.position = point
   }
   
-  func fireAtEnemy(enemy: Enemy) {
-    if inRange(self.position, range: self.range, target: enemy.position) {
-      while enemy.life >= 0 {
-        enemy.decreaseHealth(strength)
+  func decreaseLife(factor: Int) {
+    self.life -= factor
+  }
+
+  func attack(player: Enemy) {
+    if inRange(self.position, range: self.range, target: player.position) {
+      while player.life >= 0 {
+        player.decreaseLife(strength)
       }
       print("Enemy vanquished!")
     } else {
