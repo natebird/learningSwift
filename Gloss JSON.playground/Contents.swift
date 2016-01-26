@@ -5,7 +5,7 @@ import XCPlayground
 
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
 
-DataManager.getTopAppsDataFromFileWithSuccess { (data) -> Void in
+DataManager.getTopAppsDataFromItunesWithSuccess { (data) -> Void in
   var json: [String: AnyObject]!
   
   // 1
@@ -23,14 +23,24 @@ DataManager.getTopAppsDataFromFileWithSuccess { (data) -> Void in
   }
   
   // 3
-  guard let firstItem = topApps.feed?.entries?.first else {
+  guard let topApp = topApps.feed?.entries?.first else {
+    print("No such item")
+    XCPlaygroundPage.currentPage.finishExecution()
+  }
+  
+  guard let topTwentyFive = topApps.feed?.entries else {
     print("No such item")
     XCPlaygroundPage.currentPage.finishExecution()
   }
   
   // 4
-  print(firstItem)
+  print(topApp)
+  
+  for app in topTwentyFive {
+    print(app.name)
+  }
   
   XCPlaygroundPage.currentPage.finishExecution()
     
 }
+ 
