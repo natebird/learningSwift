@@ -1,21 +1,21 @@
-//
-//  App.swift
-//  TopApps
-//
-//  Created by Attila on 2015. 11. 10..
-//  Copyright © 2015. -. All rights reserved.
-//
-
-import Foundation
-
-public struct App {
+public struct App: Decodable {
   
+  // 1
   public let name: String
   public let link: String
   
-  public init(name: String, link: String) {
+  public init?(json: JSON) {
+    // 2
+    guard let container: JSON = "im:name" <~~ json,
+      let id: JSON = "id" <~~ json
+      else { return nil }
+    
+    guard let name: String = "label" <~~ container,
+      let link: String = "label" <~~ id
+      else { return nil }
+    
     self.name = name
     self.link = link
+
   }
-  
 }
