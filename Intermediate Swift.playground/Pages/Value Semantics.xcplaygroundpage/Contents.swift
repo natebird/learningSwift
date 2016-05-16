@@ -140,13 +140,168 @@ extension Int {
 8.isOdd
 
 
+// START Code Challenge
+extension String {
+    func add(int: Int) -> Int? {
+        guard let stringAsInt = Int(self) else { return nil }
+        return stringAsInt + int
+    }
+}
+
+"1".add(2)
+"baloney".add(2)
+
+// END Code Challenge
+
+
+// Protocol Conformance Using Extensions
+import GameKit
+
+protocol  UniqueType {
+    var id: Int {
+        get
+    }
+}
+
+extension UIView: UniqueType {
+//    var id: Int {
+//        return GKRandomSource.sharedRandom().nextIntWithUpperBound(1000)
+//    }
+    
+    var id: Int {
+        return 1
+    }
+}
+
+extension UniqueType {
+    // Provides a default implementation
+    
+    var id: Int {
+        return GKRandomSource.sharedRandom().nextIntWithUpperBound(1000)
+    }
+}
+
+let view = UIView()
+view.id
+
+// START Code Challenge 
+// Your task is to extend User to conform to PrettyPrintable by adding a computed property that returns a formatted description of a User instance.
+
+protocol PrettyPrintable {
+    var prettyDescription: String { get }
+}
+
+struct User {
+    let name: String
+    let ID: Int
+}
+
+// My code below:
+extension User: PrettyPrintable {
+    var prettyDescription: String {
+        return "\(name) (\(ID))"
+    }
+}
+
+
+// END Code Challenge
+
+
+protocol PersonType {
+    var firstName: String { get }
+    var middleName: String? { get }
+    var lastName: String { get }
+    
+    func fullName() -> String
+}
+
+extension PersonType {
+    func fullName() -> String {
+        return "\(firstName) \(middleName ?? "") \(lastName)"
+    }
+    
+    func greeting() -> String {
+        return "Hi, " + fullName()
+    }
+}
+
+struct Member: PersonType {
+    let firstName: String
+    let middleName: String?
+    let lastName: String
+    
+    func fullName() -> String {
+        return "\(lastName) \(firstName)"
+    }
+
+    func greeting() -> String {
+        return "Hey there, " + fullName()
+    }
+}
+
+let someMember = Member(firstName: "Nate", middleName: nil, lastName: "Bird")
+let anotherMember: PersonType = Member(firstName: "Frank", middleName: nil, lastName: "Stallone")
+someMember.fullName()
+anotherMember.fullName()
+
+someMember.greeting()
+anotherMember.greeting()
+
+
+struct Friend: PersonType {
+    let firstName: String
+    let middleName: String?
+    let lastName: String
+    
+    func greeting() -> String {
+        return "Hello, " + fullName()
+    }
+}
+
+let someFriend = Friend(firstName: "Ben", middleName: nil, lastName: "Johnson")
+let people = [someMember, anotherMember, someFriend]
+
+for person in people {
+    print(person.greeting())
+}
 
 
 
 
+// START Code Challenge
+// Your task is to provide a default implementation for the method through a protocol extension.
+protocol Math {
+    func square(value: Double) -> Double
+}
 
 
+// Enter your code below
 
+extension Math {
+    func square(value: Double) -> Double {
+        return value * value
+    }
+}
+// END Code Challenge
+
+protocol SomeProtocol {
+    func someMethod() -> Int
+}
+
+extension SomeProtocol {
+    func someMethod() -> Int {
+        return 1
+    }
+}
+
+struct SomeStruct: SomeProtocol {
+    func someMethod() -> Int {
+        return 2
+    }
+}
+
+let a: SomeStruct = SomeStruct()
+a.someMethod()
 
 
 //: [Next](@next)

@@ -4,5 +4,6 @@
         <page name='Properties'/>
         <page name='Initializer Delegation'/>
         <page name='Value Semantics'/>
+        <page name='Memory Management'/>
     </pages>
 </playground>
